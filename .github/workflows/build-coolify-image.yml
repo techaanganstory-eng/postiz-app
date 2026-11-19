@@ -66,6 +66,6 @@ jobs:
       - name: Redeploy on Coolify
         if: ${{ env.COOLIFY_WEBHOOK != '' && env.COOLIFY_TOKEN != '' }}
         run: |
-          curl --fail --silent --show-error \
+          curl --fail --silent --show-error --request POST \
             --header "Authorization: Bearer $COOLIFY_TOKEN" \
             "$COOLIFY_WEBHOOK"
