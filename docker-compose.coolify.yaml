@@ -1,8 +1,9 @@
 # Coolify deployment of this repository.
 #
 # Differences from docker-compose.yaml (the upstream local quickstart):
-# - `postiz` is built from this repository (Dockerfile.dev) instead of pulling
-#   ghcr.io/gitroomhq/postiz-app:latest, so code changes in this fork are deployed.
+# - `postiz` runs this fork's image, built by GitHub Actions
+#   (.github/workflows/build-coolify-image.yml) instead of on the Coolify server,
+#   so code changes in this fork are deployed without the server compiling them.
 # - No host `ports:`. Coolify's proxy routes the domain to container port 5000, and
 #   the Temporal / Postgres / Redis services stay on the internal Docker networks.
 #   (Host port 8080 also collides with coolify-proxy.)
@@ -19,9 +20,9 @@
 
 services:
   postiz:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
+    # Built from this repository by .github/workflows/build-coolify-image.yml.
+    image: ghcr.io/techaanganstory-eng/postiz-app:latest
+    pull_policy: always
     restart: always
     environment:
       # === Required Settings
